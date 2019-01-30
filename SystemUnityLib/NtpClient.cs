@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 
 namespace SystemUnityLib
 {
@@ -19,6 +20,24 @@ namespace SystemUnityLib
         public NtpClient(string NtpServer)
         {
             this.NtpServer = NtpServer;
+        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern bool SetSystemTime(ref SYSTEMTIME systime);
+        /// <summary>
+        /// 设置本机时间
+        /// </summary>
+        /// <param name="datetime"></param>
+        /// <returns></returns>
+        public bool SetLocalMachineDateTime(DateTime datetime)
+        {
+            SYSTEMTIME time = new SYSTEMTIME();
+            time.wYear = (short)datetime.Year;
+            time.wMonth = (short)datetime.Month;
+            time.wDay = (short)datetime.Day;
+            time.wHour = (short)datetime.Hour;
+            time.wMinute = (short)datetime.Minute;
+            time.wSecond = (short)datetime.Second;
+            return SetSystemTime(ref time);
         }
         /// <summary>
         /// 从NtpServer获取时间
@@ -48,7 +67,23 @@ namespace SystemUnityLib
             ulong fractPart = (ulong)ntpData[44] << 24 | (ulong)ntpData[45] << 16 | (ulong)ntpData[46] << 8 | ntpData[47];
             var milliseconds = (intPart * 1000) + ((fractPart * 1000) / 0x100000000L);
             var networkDateTime = (new DateTime(1900, 1, 1)).AddMilliseconds((long)milliseconds);
-            return networkDateTime.ToLocalTime();
+            return networkDateTime;
+        }
+
+        /// <summary>
+        /// 时间结构体
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SYSTEMTIME
+        {
+            public short wYear;
+            public short wMonth;
+            public short wDayOfWeek;
+            public short wDay;
+            public short wHour;
+            public short wMinute;
+            public short wSecond;
+            public short wMilliseconds;
         }
 
     }
