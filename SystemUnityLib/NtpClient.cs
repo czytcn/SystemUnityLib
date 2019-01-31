@@ -23,6 +23,24 @@ namespace SystemUnityLib
         }
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern bool SetSystemTime(ref SYSTEMTIME systime);
+
+
+        /// <summary>
+        /// 时间结构体
+        /// </summary>
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct SYSTEMTIME
+        {
+            public short wYear;
+            public short wMonth;
+            public short wDayOfWeek;
+            public short wDay;
+            public short wHour;
+            public short wMinute;
+            public short wSecond;
+            public short wMilliseconds;
+        }
+
         /// <summary>
         /// 设置本机时间
         /// </summary>
@@ -43,7 +61,7 @@ namespace SystemUnityLib
         /// 从NtpServer获取时间
         /// </summary>
         /// <returns></returns>
-        public DateTime GetTimeFromNtpServer()
+        public  DateTime GetTimeFromNtpServer()
         {
             string ntpServer = this.NtpServer;
             var ntpData = new byte[48];
@@ -69,22 +87,5 @@ namespace SystemUnityLib
             var networkDateTime = (new DateTime(1900, 1, 1)).AddMilliseconds((long)milliseconds);
             return networkDateTime;
         }
-
-        /// <summary>
-        /// 时间结构体
-        /// </summary>
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct SYSTEMTIME
-        {
-            public short wYear;
-            public short wMonth;
-            public short wDayOfWeek;
-            public short wDay;
-            public short wHour;
-            public short wMinute;
-            public short wSecond;
-            public short wMilliseconds;
-        }
-
     }
 }
