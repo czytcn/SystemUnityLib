@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BootMode.cs" />
     <Compile Include="NtpClient.cs" />
+    <Compile Include="OsSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
   </ItemGroup>
