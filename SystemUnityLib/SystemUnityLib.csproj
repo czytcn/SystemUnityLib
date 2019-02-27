@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootMode.cs" />
+    <Compile Include="JunctionPoint.cs" />
     <Compile Include="NtpClient.cs" />
     <Compile Include="OsSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
